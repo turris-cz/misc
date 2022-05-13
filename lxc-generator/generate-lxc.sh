@@ -74,7 +74,8 @@ get_linaro_url() {
 }
 
 get_lxc_url() {
-    echo https://images.linuxcontainers.org/images/$1/default/`wget -O - https://images.linuxcontainers.org/images/$1/default | sed -n 's|.*href="\./\(20[^/]*\)/.*|\1|p' | sort | tail -n 1`/rootfs.tar.xz
+    date="$(wget -O - https://images.linuxcontainers.org/images/$1/${2:-default} | sed -n 's|.*href="\./\(20[^/]*\)/.*|\1|p' | sort | tail -n 1)"
+    echo "https://images.linuxcontainers.org/images/$1/${2:-default}/$date/rootfs.tar.xz"
 }
 
 get_opensuse_url() {
@@ -125,6 +126,10 @@ add_image "Ubuntu" "Focal" "armv7l" "`get_lxc_url ubuntu/focal/armhf`"
 add_image "Ubuntu" "Focal" "aarch64" "`get_lxc_url ubuntu/focal/arm64`"
 add_image "Ubuntu" "Impish" "armv7l" "`get_lxc_url ubuntu/impish/armhf`"
 add_image "Ubuntu" "Impish" "aarch64" "`get_lxc_url ubuntu/impish/arm64`"
+add_image "VoidLinux" "glibc" "aarch64" "`get_lxc_url voidlinux/current/arm64`"
+add_image "VoidLinux" "glibc" "armv7l" "`get_lxc_url voidlinux/current/armhf`"
+add_image "VoidLinux" "musl" "aarch64" "`get_lxc_url voidlinux/current/arm64 musl`"
+add_image "VoidLinux" "musl" "armv7l" "`get_lxc_url voidlinux/current/armhf musl`"
 
 if [ "`gpg -K`" ]; then
 if [ -f ~/gpg-pass ]; then
