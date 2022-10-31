@@ -114,8 +114,6 @@ add_image "Gentoo" "musl-openrc" "armv7l" "`get_gentoo_url arm armv7a_hardfp-mus
 add_image "Gentoo" "openrc" "aarch64" "`get_gentoo_url arm64 arm64`"
 add_image "Gentoo" "systemd" "aarch64" "`get_gentoo_url arm64 arm64-systemd`"
 add_image "Gentoo" "musl-openrc" "aarch64" "`get_gentoo_url arm64 arm64-musl`"
-add_image "openSUSE" "15.3" "armv7l" "`get_opensuse_url https://download.opensuse.org/ports/armv7hl/distribution/leap/15.3/appliances`"
-add_image "openSUSE" "15.3" "aarch64" "`get_opensuse_url https://download.opensuse.org/ports/aarch64/distribution/leap/15.3/appliances`"
 add_image "openSUSE" "15.4" "armv7l" "`get_opensuse_url https://download.opensuse.org/ports/armv7hl/distribution/leap/15.4/appliances`"
 add_image "openSUSE" "15.4" "aarch64" "`get_opensuse_url https://download.opensuse.org/ports/aarch64/distribution/leap/15.4/appliances`"
 add_image "openSUSE" "Tumbleweed" "armv7l" "https://download.opensuse.org/ports/armv7hl/factory/appliances/opensuse-tumbleweed-image.armv7l-lxc.tar.xz"
