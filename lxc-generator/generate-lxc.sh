@@ -74,7 +74,7 @@ get_linaro_url() {
 }
 
 get_lxc_url() {
-    date="$(wget -O - https://images.linuxcontainers.org/images/$1/${2:-default} | sed -n 's|.*href="\./\(20[^/]*\)/.*|\1|p' | sort | tail -n 1)"
+    date="$(wget -O - https://images.linuxcontainers.org/images/$1/${2:-default} | sed -n 's|.*href="\(20.*\)/".*|\1|p' | sort | tail -n 1)"
     echo "https://images.linuxcontainers.org/images/$1/${2:-default}/$date/rootfs.tar.xz"
 }
 
