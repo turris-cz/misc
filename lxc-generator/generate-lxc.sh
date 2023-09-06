@@ -78,11 +78,6 @@ get_lxc_url() {
     echo "https://images.linuxcontainers.org/images/$1/${2:-default}/$date/rootfs.tar.xz"
 }
 
-get_cached_url() {
-    date="$(wget -O - https://repo.turris.cz/lxc/images/$1 | sed -n 's|.*href="\(20[^/]*\)/.*|\1|p' | sort | tail -n 1)"
-    echo "https://repo.turris.cz/lxc/images/$1/$date/rootfs.tar.xz"
-}
-
 get_opensuse_url() {
     URL="`wget -O - "$1" | sed -n 's|.*href="\([^"]*JeOS[^"]*rootfs[^"]*'"$2"'[^"]*.tar.xz\)".*|\1|p' | head -n 1`"
     [ -n "$URL" ] || URL="`wget -O - "$1" | sed -n 's|.*href="\([^"]*JeOS[^"]*Snapshot[^"]*'"$2"'[^"]*.tar.xz\)".*|\1|p' | head -n 1`"
@@ -93,7 +88,7 @@ get_alpine_url() {
     VER="$1"
     [ "$1" = edge ] || VER="v$VER"
     URL="https://dl-cdn.alpinelinux.org/alpine/$VER/releases/$2"
-    URL="`wget -O - "$URL" | sed -n 's|.*href="\(alpine-minirootfs-[^"]*\)".*|'"$URL"'/\1|p' | grep -v '_rc' | tail -n 1`"
+    URL="`wget -O - "$URL" | sed -n 's|.*href="\(alpine-minirootfs-[^"]*\)".*|'"$URL"'/\1|p' | egrep -v '(_rc|\.sha)' | tail -n 1`"
     echo "$URL"
 }
 
@@ -106,11 +101,10 @@ add_image "Alpine" "3.18" "armv7l" "`get_alpine_url 3.18 armhf`"
 add_image "Alpine" "3.18" "aarch64" "`get_alpine_url 3.18 aarch64`"
 add_image "Alpine" "Edge" "armv7l" "`get_alpine_url edge armhf`"
 add_image "Alpine" "Edge" "aarch64" "`get_alpine_url edge aarch64`"
-add_image "ArchLinux" "2023-06" "armv7l" "`get_cached_url ArchLinux/latest/armv7l`"
-add_image "ArchLinux" "latest" "aarch64" "`get_lxc_url archlinux/current/arm64`"
+add_image "ArchLinux" "latest" "armv7l" "http://os.archlinuxarm.org/os/ArchLinuxARM-armv7-latest.tar.gz"
+add_image "ArchLinux" "latest" "aarch64" "http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz"
 add_image "CentOS_Stream" "8" "aarch64" "`get_lxc_url centos/8-Stream/arm64`"
 add_image "CentOS_Stream" "9" "aarch64" "`get_lxc_url centos/9-Stream/arm64`"
-add_image "Debian" "Bullseye-2023-06" "armv7l" "`get_cached_url Debian/Bullseye/armv7l`"
 add_image "Debian" "Bullseye" "aarch64" "`get_lxc_url debian/bullseye/arm64`"
 add_image "Fedora" "37" "aarch64" "`get_lxc_url fedora/37/arm64`"
 add_image "Fedora" "38" "aarch64" "`get_lxc_url fedora/38/arm64`"
@@ -129,12 +123,10 @@ add_image "OpenWrt" "22.03.5" "arm64" "https://downloads.openwrt.org/releases/22
 add_image "OpenWrt" "22.03.5" "armv7l" "https://downloads.openwrt.org/releases/22.03.5/targets/mvebu/cortexa9/openwrt-22.03.5-mvebu-cortexa9-rootfs.tar.gz"
 add_image "OpenWrt" "snapshot" "arm64" "https://downloads.openwrt.org/snapshots/targets/mvebu/cortexa53/openwrt-mvebu-cortexa53-rootfs.tar.gz"
 add_image "OpenWrt" "snapshot" "armv7l" "https://downloads.openwrt.org/snapshots/targets/mvebu/cortexa9/openwrt-mvebu-cortexa9-rootfs.tar.gz"
-add_image "Ubuntu" "Bionic-2023-06" "armv7l" "`get_cached_url Ubuntu/Bionic/armv7l`"
-add_image "Ubuntu" "Bionic" "aarch64" "`get_lxc_url ubuntu/bionic/arm64`"
-add_image "Ubuntu" "Focal-2023-06" "armv7l" "`get_cached_url Ubuntu/Focal/armv7l`"
-add_image "Ubuntu" "Focal" "aarch64" "`get_lxc_url ubuntu/focal/arm64`"
-add_image "Ubuntu" "Jammy-2023-06" "armv7l" "`get_cached_url Ubuntu/Jammy/armv7l`"
-add_image "Ubuntu" "Jammy" "aarch64" "`get_lxc_url ubuntu/jammy/arm64`"
+add_image "Ubuntu" "22.04" "armv7l" "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-armhf-root.tar.xz"
+add_image "Ubuntu" "22.04" "aarch64" "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64-root.tar.xz"
+add_image "Ubuntu" "23.04" "armv7l" "https://cloud-images.ubuntu.com/releases/23.04/release/ubuntu-23.04-server-cloudimg-armhf-root.tar.xz"
+add_image "Ubuntu" "23.04" "aarch64" "https://cloud-images.ubuntu.com/releases/23.04/release/ubuntu-23.04-server-cloudimg-amd64-root.tar.xz"
 add_image "VoidLinux" "glibc" "aarch64" "`get_lxc_url voidlinux/current/arm64`"
 add_image "VoidLinux" "musl" "aarch64" "`get_lxc_url voidlinux/current/arm64 musl`"
 
