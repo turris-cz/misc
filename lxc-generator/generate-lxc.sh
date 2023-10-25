@@ -1,6 +1,7 @@
 #!/bin/bash
 mkdir -p meta/1.0
 rm -f meta/1.0/index-system*
+rm -f meta/1.0/index-user*
 mkdir -p images
 rm -rf images/*
 
@@ -14,6 +15,7 @@ DATE="`date +%Y-%m-%d`"
 add_image() {
     echo "$1;$2;$3;default;$DATE;/images/$1/$2/$3/$DATE" >> meta/1.0/index-system.2
     echo "$1;$2;$3;default;$DATE;/images/$1/$2/$3/$DATE" >> meta/1.0/index-system
+    echo "$1;$2;$3;default;$DATE;/images/$1/$2/$3/$DATE" >> meta/1.0/index-user
     mkdir -p "images/$1/$2/$3/$DATE"
     pushd "images/$1/$2/$3/$DATE"
     if [ -f "$4" ]; then
