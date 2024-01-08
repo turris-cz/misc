@@ -90,7 +90,7 @@ get_alpine_url() {
     VER="$1"
     [ "$1" = edge ] || VER="v$VER"
     URL="https://dl-cdn.alpinelinux.org/alpine/$VER/releases/$2"
-    URL="`wget -O - "$URL" | sed -n 's|.*href="\(alpine-minirootfs-[^"]*\)".*|'"$URL"'/\1|p' | egrep -v '(_rc|\.sha)' | tail -n 1`"
+    URL="`wget -O - "$URL/latest-releases.yaml" | sed -n 's|.*file: \(alpine-minirootfs-.*\)|'"$URL"'/\1|p'`"
     echo "$URL"
 }
 
