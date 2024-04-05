@@ -94,6 +94,15 @@ get_alpine_url() {
     echo "$URL"
 }
 
+get_maurer_url() {
+    DIST=$1
+    VER=$2
+    ARCH=$3
+    REL_DATE=$(wget -O - "https://maurerr.github.io/lxc/images/debian/bookworm/armv7l/" | grep -Eo '\<td>.*</p>' | grep -Eo '[0-9]{4}-[0-9]{2}-[0-9]{2}')
+    URL="https://maurerr.github.io/lxc/images/$DIST/$VER/$ARCH/$REL_DATE/rootfs.tar.xz"
+    echo "$URL"
+}
+
 add_image "Turris_OS" "HBS" "aarch64" "https://repo.turris.cz/hbs/medkit/mox-medkit-latest.tar.gz"
 add_image "Turris_OS" "HBS" "armv7l" "https://repo.turris.cz/hbs/medkit/omnia-medkit-latest.tar.gz"
 add_image "Turris_OS" "HBS" "ppc" "https://repo.turris.cz/hbs/medkit/turris1x-medkit-latest.tar.gz"
@@ -101,6 +110,8 @@ add_image "Alpine" "3.17" "armv7l" "`get_alpine_url 3.17 armhf`"
 add_image "Alpine" "3.17" "aarch64" "`get_alpine_url 3.17 aarch64`"
 add_image "Alpine" "3.18" "armv7l" "`get_alpine_url 3.18 armhf`"
 add_image "Alpine" "3.18" "aarch64" "`get_alpine_url 3.18 aarch64`"
+add_image "Alpine" "3.19" "armv7l" "`get_alpine_url 3.19 armhf`"
+add_image "Alpine" "3.19" "aarch64" "`get_alpine_url 3.19 aarch64`"
 add_image "Alpine" "Edge" "armv7l" "`get_alpine_url edge armhf`"
 add_image "Alpine" "Edge" "aarch64" "`get_alpine_url edge aarch64`"
 add_image "ArchLinux" "latest" "armv7l" "http://os.archlinuxarm.org/os/ArchLinuxARM-armv7-latest.tar.gz"
@@ -108,6 +119,8 @@ add_image "ArchLinux" "latest" "aarch64" "http://os.archlinuxarm.org/os/ArchLinu
 add_image "CentOS_Stream" "8" "aarch64" "`get_lxc_url centos/8-Stream/arm64`"
 add_image "CentOS_Stream" "9" "aarch64" "`get_lxc_url centos/9-Stream/arm64`"
 add_image "Debian" "Bullseye" "aarch64" "`get_lxc_url debian/bullseye/arm64`"
+add_image "Debian by maurer" "Bookworm" "armv7l" "`get_maurer_url debian bookworm armv7l`"
+add_image "Debian by maurer" "Bullseye" "armv7l" "`get_maurer_url debian bullseye armv7l`"
 add_image "Fedora" "38" "aarch64" "`get_lxc_url fedora/38/arm64`"
 add_image "Fedora" "39" "aarch64" "`get_lxc_url fedora/39/arm64`"
 add_image "Gentoo" "openrc" "armv7l" "`get_gentoo_url arm armv7a_hardfp-openrc`"
@@ -116,6 +129,7 @@ add_image "Gentoo" "musl-openrc" "armv7l" "`get_gentoo_url arm armv7a_hardfp-mus
 add_image "Gentoo" "openrc" "aarch64" "`get_gentoo_url arm64 arm64`"
 add_image "Gentoo" "systemd" "aarch64" "`get_gentoo_url arm64 arm64-systemd`"
 add_image "Gentoo" "musl-openrc" "aarch64" "`get_gentoo_url arm64 arm64-musl`"
+add_image "Kali by maurer" "Kali-rolling" "armv7l" "`get_maurer_url kali kali-rolling armv7l`"
 add_image "openSUSE" "15.4" "armv7l" "`get_opensuse_url https://download.opensuse.org/ports/armv7hl/distribution/leap/15.4/appliances`"
 add_image "openSUSE" "15.4" "aarch64" "`get_opensuse_url https://download.opensuse.org/ports/aarch64/distribution/leap/15.4/appliances`"
 add_image "openSUSE" "15.5" "aarch64" "`get_opensuse_url https://download.opensuse.org/distribution/leap/15.5/appliances/ aarch64`"
