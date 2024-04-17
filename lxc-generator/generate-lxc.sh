@@ -98,7 +98,7 @@ get_maurer_url() {
     DIST=$1
     VER=$2
     ARCH=$3
-    REL_DATE=$(wget -O - "https://maurerr.github.io/lxc/images/$DIST/$VER/$ARCH/" | grep -Eo '\<td>.*</p>' | grep -Eo '[0-9]{4}-[0-9]{2}-[0-9]{2}')
+    REL_DATE=$(wget -O - "https://maurerr.github.io/lxc/images/$DIST/$VER/$ARCH/" | grep -Eo '<a\ href=\"[0-9].*\">' | grep -Eo '[0-9]{4}-[0-9]{2}-[0-9]{2}')
     URL="https://maurerr.github.io/lxc/images/$DIST/$VER/$ARCH/$REL_DATE/rootfs.tar.xz"
     echo "$URL"
 }
