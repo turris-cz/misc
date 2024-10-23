@@ -94,7 +94,7 @@ get_alpine_url() {
     echo "$URL"
 }
 
-get_maurer_url() {
+get_maurerr_url() {
     DIST=$1
     VER=$2
     ARCH=$3
@@ -120,8 +120,13 @@ add_image "ArchLinux" "latest" "armv7l" "http://os.archlinuxarm.org/os/ArchLinux
 add_image "ArchLinux" "latest" "aarch64" "http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz"
 add_image "CentOS_Stream" "9" "aarch64" "`get_lxc_url centos/9-Stream/arm64`"
 add_image "Debian" "Bullseye" "aarch64" "`get_lxc_url debian/bullseye/arm64`"
-add_image "Debian_by_maurer" "Bookworm" "armv7l" "`get_maurer_url debian bookworm armv7l`"
-add_image "Debian_by_maurer" "Bullseye" "armv7l" "`get_maurer_url debian bullseye armv7l`"
+add_image "Debian" "Bookworm" "aarch64" "`get_lxc_url debian/bookworm/arm64`"
+add_image "Debian" "Buster" "aarch64" "`get_lxc_url debian/buster/arm64`"
+add_image "Debian" "Bullseye" "armv7l" "`get_lxc_url debian/bullseye/armhf`"
+add_image "Debian" "Bookworm" "armv7l" "`get_lxc_url debian/bookworm/armhf`"
+add_image "Debian" "Buster" "armv7l" "`get_lxc_url debian/buster/armhf`"
+add_image "Debian_by_maurerr" "Bookworm" "armv7l" "`get_maurerr_url debian bookworm armv7l`"
+add_image "Debian_by_maurerr" "Bullseye" "armv7l" "`get_maurerr_url debian bullseye armv7l`"
 add_image "Fedora" "39" "aarch64" "`get_lxc_url fedora/39/arm64`"
 add_image "Fedora" "40" "aarch64" "`get_lxc_url fedora/40/arm64`"
 add_image "Gentoo" "openrc" "armv7l" "`get_gentoo_url arm armv7a_hardfp-openrc`"
@@ -130,7 +135,7 @@ add_image "Gentoo" "musl-openrc" "armv7l" "`get_gentoo_url arm armv7a_hardfp-mus
 add_image "Gentoo" "openrc" "aarch64" "`get_gentoo_url arm64 arm64`"
 add_image "Gentoo" "systemd" "aarch64" "`get_gentoo_url arm64 arm64-systemd`"
 add_image "Gentoo" "musl-openrc" "aarch64" "`get_gentoo_url arm64 arm64-musl`"
-add_image "Kali_by_maurer" "Kali-rolling" "armv7l" "`get_maurer_url kali kali-rolling armv7l`"
+add_image "Kali_by_maurerr" "Kali-rolling" "armv7l" "`get_maurerr_url kali kali-rolling armv7l`"
 add_image "openSUSE" "15.4" "armv7l" "`get_opensuse_url https://download.opensuse.org/ports/armv7hl/distribution/leap/15.4/appliances`"
 add_image "openSUSE" "15.4" "aarch64" "`get_opensuse_url https://download.opensuse.org/ports/aarch64/distribution/leap/15.4/appliances`"
 add_image "openSUSE" "15.5" "aarch64" "`get_opensuse_url https://download.opensuse.org/distribution/leap/15.5/appliances/ aarch64`"
