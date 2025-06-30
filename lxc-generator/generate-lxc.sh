@@ -103,6 +103,13 @@ get_maurerr_url() {
     echo "$URL"
 }
 
+get_ubuntu_url() {
+    VER="$1"
+    ARCH="$2"
+    URL="https://cloud-images.ubuntu.com/releases/$VER/release/ubuntu-$VER-server-cloudimg-$ARCH-root.tar.xz"
+    echo "$URL"
+}
+
 add_image "Turris_OS" "HBS" "aarch64" "https://repo.turris.cz/hbs/medkit/mox-medkit-latest.tar.gz"
 add_image "Turris_OS" "HBS" "armv7l" "https://repo.turris.cz/hbs/medkit/omnia-medkit-latest.tar.gz"
 add_image "Turris_OS" "HBS" "ppc" "https://repo.turris.cz/hbs/medkit/turris1x-medkit-latest.tar.gz"
@@ -147,12 +154,12 @@ add_image "OpenWrt" "23.05.2" "arm64" "https://downloads.openwrt.org/releases/23
 add_image "OpenWrt" "23.05.2" "armv7l" "https://downloads.openwrt.org/releases/23.05.2/targets/mvebu/cortexa9/openwrt-23.05.2-mvebu-cortexa9-rootfs.tar.gz"
 add_image "OpenWrt" "snapshot" "arm64" "https://downloads.openwrt.org/snapshots/targets/mvebu/cortexa53/openwrt-mvebu-cortexa53-rootfs.tar.gz"
 add_image "OpenWrt" "snapshot" "armv7l" "https://downloads.openwrt.org/snapshots/targets/mvebu/cortexa9/openwrt-mvebu-cortexa9-rootfs.tar.gz"
-add_image "Ubuntu" "22.04" "armv7l" "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-armhf-root.tar.xz"
-add_image "Ubuntu" "22.04" "aarch64" "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64-root.tar.xz"
-add_image "Ubuntu" "23.04" "armv7l" "https://cloud-images.ubuntu.com/releases/23.04/release/ubuntu-23.04-server-cloudimg-armhf-root.tar.xz"
-add_image "Ubuntu" "23.04" "aarch64" "https://cloud-images.ubuntu.com/releases/23.04/release/ubuntu-23.04-server-cloudimg-amd64-root.tar.xz"
-add_image "Ubuntu" "23.10" "armv7l" "https://cloud-images.ubuntu.com/releases/23.10/release/ubuntu-23.10-server-cloudimg-armhf-root.tar.xz"
-add_image "Ubuntu" "23.10" "aarch64" "https://cloud-images.ubuntu.com/releases/23.10/release/ubuntu-23.10-server-cloudimg-amd64-root.tar.xz"
+add_image "Ubuntu" "22.04" "armv7l" "`get_ubuntu_url 22.04 armhf`"
+add_image "Ubuntu" "22.04" "aarch64" "`get_ubuntu_url 22.04 amd64`"
+add_image "Ubuntu" "23.04" "armv7l" "`get_ubuntu_url 23.04 armhf`"
+add_image "Ubuntu" "23.04" "aarch64" "`get_ubuntu_url 23.04 amd64`"
+add_image "Ubuntu" "23.10" "armv7l" "`get_ubuntu_url 23.10 armhf`"
+add_image "Ubuntu" "23.10" "aarch64" "`get_ubuntu_url 23.10 amd64`"
 add_image "VoidLinux" "glibc" "aarch64" "`get_lxc_url voidlinux/current/arm64`"
 add_image "VoidLinux" "musl" "aarch64" "`get_lxc_url voidlinux/current/arm64 musl`"
 
