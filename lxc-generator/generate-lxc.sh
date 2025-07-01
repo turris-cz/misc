@@ -148,6 +148,7 @@ add_image "Debian_by_maurerr" "Bookworm" "armv7l" "`get_maurerr_url debian bookw
 add_image "Debian_by_maurerr" "Bullseye" "armv7l" "`get_maurerr_url debian bullseye armv7l`"
 add_image "Fedora" "40" "aarch64" "`get_lxc_url fedora/40/arm64`"
 add_image "Fedora" "41" "aarch64" "`get_lxc_url fedora/41/arm64`"
+add_image "Fedora" "42" "aarch64" "`get_lxc_url fedora/42/arm64`"
 add_image "Gentoo" "openrc" "armv7l" "`get_gentoo_url arm armv7a_hardfp-openrc`"
 add_image "Gentoo" "systemd" "armv7l" "`get_gentoo_url arm armv7a_hardfp-systemd`"
 add_image "Gentoo" "musl-openrc" "armv7l" "`get_gentoo_url arm armv7a_hardfp-musl-openrc`"
