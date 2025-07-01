@@ -110,6 +110,22 @@ get_ubuntu_url() {
     echo "$URL"
 }
 
+get_openwrt_url() {
+    VER="$1"
+    ARCH="$2"
+    if [ "$ARCH" = arm64 ]; then
+        ARCH="cortexa53"
+    elif [ "$ARCH" = armv7l ]; then
+        ARCH="cortexa9"
+    fi
+    if [ "$VER" = snapshot ]; then
+        URL="https://downloads.openwrt.org/snapshots/targets/mvebu/$ARCH/openwrt-mvebu-$ARCH-rootfs.tar.gz"
+    else
+        URL="https://downloads.openwrt.org/releases/$VER/targets/mvebu/$ARCH/openwrt-$VER-mvebu-$ARCH-rootfs.tar.gz"
+    fi
+    echo "$URL"
+}
+
 add_image "Turris_OS" "HBS" "aarch64" "https://repo.turris.cz/hbs/medkit/mox-medkit-latest.tar.gz"
 add_image "Turris_OS" "HBS" "armv7l" "https://repo.turris.cz/hbs/medkit/omnia-medkit-latest.tar.gz"
 add_image "Turris_OS" "HBS" "ppc" "https://repo.turris.cz/hbs/medkit/turris1x-medkit-latest.tar.gz"
@@ -148,12 +164,12 @@ add_image "openSUSE" "15.4" "aarch64" "`get_opensuse_url https://download.opensu
 add_image "openSUSE" "15.5" "aarch64" "`get_opensuse_url https://download.opensuse.org/distribution/leap/15.5/appliances/ aarch64`"
 add_image "openSUSE" "Tumbleweed" "armv7l" "https://download.opensuse.org/ports/armv7hl/factory/appliances/opensuse-tumbleweed-image.armv7l-lxc.tar.xz"
 add_image "openSUSE" "Tumbleweed" "aarch64" "https://download.opensuse.org/ports/aarch64/tumbleweed/appliances/opensuse-tumbleweed-image.aarch64-lxc.tar.xz"
-add_image "OpenWrt" "22.03.5" "arm64" "https://downloads.openwrt.org/releases/22.03.5/targets/mvebu/cortexa53/openwrt-22.03.5-mvebu-cortexa53-rootfs.tar.gz"
-add_image "OpenWrt" "22.03.5" "armv7l" "https://downloads.openwrt.org/releases/22.03.5/targets/mvebu/cortexa9/openwrt-22.03.5-mvebu-cortexa9-rootfs.tar.gz"
-add_image "OpenWrt" "23.05.2" "arm64" "https://downloads.openwrt.org/releases/23.05.2/targets/mvebu/cortexa53/openwrt-23.05.2-mvebu-cortexa53-rootfs.tar.gz"
-add_image "OpenWrt" "23.05.2" "armv7l" "https://downloads.openwrt.org/releases/23.05.2/targets/mvebu/cortexa9/openwrt-23.05.2-mvebu-cortexa9-rootfs.tar.gz"
-add_image "OpenWrt" "snapshot" "arm64" "https://downloads.openwrt.org/snapshots/targets/mvebu/cortexa53/openwrt-mvebu-cortexa53-rootfs.tar.gz"
-add_image "OpenWrt" "snapshot" "armv7l" "https://downloads.openwrt.org/snapshots/targets/mvebu/cortexa9/openwrt-mvebu-cortexa9-rootfs.tar.gz"
+add_image "OpenWrt" "22.03.5" "arm64" "`get_openwrt_url 22.03.5 arm64`"
+add_image "OpenWrt" "22.03.5" "armv7l" "`get_openwrt_url 22.03.5 armv7l`"
+add_image "OpenWrt" "23.05.2" "arm64" "`get_openwrt_url 23.05.2 arm64`"
+add_image "OpenWrt" "23.05.2" "armv7l" "`get_openwrt_url 23.05.2 armv7l`"
+add_image "OpenWrt" "snapshot" "arm64" "`get_openwrt_url snapshot arm64`"
+add_image "OpenWrt" "snapshot" "armv7l" "`get_openwrt_url snapshot armv7l`"
 add_image "Ubuntu" "24.04" "armv7l" "`get_ubuntu_url 24.04 armhf`"
 add_image "Ubuntu" "24.04" "aarch64" "`get_ubuntu_url 24.04 amd64`"
 add_image "Ubuntu" "25.04" "armv7l" "`get_ubuntu_url 25.04 armhf`"
