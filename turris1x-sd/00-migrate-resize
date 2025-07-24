@@ -1,0 +1,21 @@
+#!/bin/sh
+# resize root partition to maximum size
+
+root_mount="$(mount | grep "on / ")"
+dev="$(echo $root_mount | sed 's/p[0-9]*.*//g')"
+
+fdisk $dev <<EOF
+d
+n
+p
+1
+16384
+
+a
+w
+EOF
+sync
+
+btrfs filesystem resize max /
+
+exit 0
