@@ -28,8 +28,8 @@ usage() {
     echo "expands itself to whole SD card on first boot."
     echo ""
     echo "Examples:"
-    echo "	$0 /dev/mmcblk0"
-    echo "	$0 -d ~/turris1x-sd.img"
+    echo "    $0 /dev/mmcblk0"
+    echo "    $0 -d ~/turris1x-sd.img"
 }
 
 die() {
@@ -58,6 +58,7 @@ are_you_sure() {
 make_image() {
     dd if=/dev/zero of=$FILEPATH bs=1M count=512
     losetup -P /dev/loop5 $FILEPATH || die "Cannot open loop device"
+    LOSETUP=1
     SDCARD="/dev/loop5"
 }
 
@@ -80,20 +81,20 @@ EOF
     sync
     partprobe
     # rewrite to fdisk -l
-	find_sdcardp
+    find_sdcardp
     mkfs.btrfs -L turris-rootfs -f "${SDCARDP}1" || die "Can't format btrfs partition!"
     ROOT_UUID="$(blkid "${SDCARDP}1" | sed -n 's|^/dev/.*UUID="\([0-9a-fA-F-]*\)".*|\1|p')"
 }
 
 # Find how are the partitions marked
 find_sdcardp() {
-	set +e
+    set +e
         SDCARDP=$SDCARD
-	ls "${SDCARD}p1" >/dev/null 2>/dev/null
-	if [ $? -eq 0 ] || [ -n "$DIST" ]; then
-		SDCARDP="${SDCARD}p"
-	fi
-	set -e
+    ls "${SDCARD}p1" >/dev/null 2>/dev/null
+    if [ $? -eq 0 ] || [ -n "$DIST" ]; then
+        SDCARDP="${SDCARD}p"
+    fi
+    set -e
 }
 
 clean() (
@@ -101,20 +102,20 @@ clean() (
     set +e # just to continue if unmount fails with another umount
     #umount "$TMPDIR/target/@/boot/tefi"
     umount "$TMPDIR/target"
-    losetup -d /dev/loop5 || true
+    [ -n "$LOSETUP" ] && losetup -d /dev/loop5
     rmdir "$TMPDIR/target"
     rmdir "$TMPDIR/src"
     rm $medkit
-	rm turris1x-uboot-sdcard.bin
+    rm turris1x-uboot-sdcard.bin
 )
 
 uboot_flash() {
     wget https://repo.turris.cz/turris1x-uboot-sdcard.bin || die "Can't download u-boot"
-	dd if=turris1x-uboot-sdcard.bin of="$SDCARD" bs=1 count=176 conv=notrunc
-	dd if=turris1x-uboot-sdcard.bin of="$SDCARD" bs=1 seek=1048576 skip=512 conv=notrunc
+    dd if=turris1x-uboot-sdcard.bin of="$SDCARD" bs=1 count=176 conv=notrunc
+    dd if=turris1x-uboot-sdcard.bin of="$SDCARD" bs=1 seek=1048576 skip=512 conv=notrunc
 
-	printf '\x00' | sudo dd of="$SDCARD" bs=1 seek=$((0x52)) count=1 conv=notrunc
-	printf '\x10' | sudo dd of="$SDCARD" bs=1 seek=$((0x51)) count=1 conv=notrunc
+    printf '\x00' | sudo dd of="$SDCARD" bs=1 seek=$((0x52)) count=1 conv=notrunc
+    printf '\x10' | sudo dd of="$SDCARD" bs=1 seek=$((0x51)) count=1 conv=notrunc
 }
 
 # Copy current root to SD card
@@ -122,7 +123,7 @@ migrate_to_sdcard() {
     TMPDIR="$(mktemp -d)"
     trap clean EXIT
 
-	uboot_flash
+    uboot_flash
 
     mkdir -p "$TMPDIR/target"
     mkdir -p "$TMPDIR/src"
@@ -138,8 +139,8 @@ migrate_to_sdcard() {
     [ -n "$DIST" ] && cp 00-migrate-resize $TMPDIR/target/@factory/etc/uci-defaults
 
     btrfs subvolume snapshot "$TMPDIR/target/@factory" "$TMPDIR/target/@"
-	
-	ln -s "@/boot/boot.scr" "$TMPDIR/target/boot.scr"
+ 
+    ln -s "@/boot/boot.scr" "$TMPDIR/target/boot.scr"
 
     trap "" EXIT
     clean
@@ -150,11 +151,12 @@ migrate_to_sdcard() {
 
 DIST=""
 FILEPATH=""
+LOSETUP=""
 while [ $# -gt 0 ]; do
     case "$1" in
         -d|--distimage)
             DIST=1
-	    shift
+        shift
             ;;
         -*)
             usage
