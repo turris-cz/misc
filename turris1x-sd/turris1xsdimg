@@ -17,7 +17,7 @@
 set -ueo pipefail
 
 medkit="turris1x-medkit-latest.tar.gz"
-branch="hbk"
+branch="hbs"
 
 usage() {
     echo "Usage: $0 [-d|--distimage] <PATH>"
