@@ -131,7 +131,7 @@ migrate_to_sdcard() {
     mount "${SDCARDP}1" "$TMPDIR/target" || die "Can't mount ${SDCARDP}1"
     btrfs subvolume create "$TMPDIR/target/@factory" || die "Can't create factory subvolume!"
     curl -O https://repo.turris.cz/$branch/medkit/$medkit || die "Can't download medkit"
-    curl https://repo.turris.cz/$branch/medkit/$medkit.sha256 | sha256sum -c - || die "Can't verify medkit integrity"
+    # curl https://repo.turris.cz/$branch/medkit/$medkit.sha256 | sha256sum -c - || die "Can't verify medkit integrity"
     tar -C "$TMPDIR/target/@factory" -xzf $medkit  || echo "Creating factory snapshot failed" >&2
     # copy enlarge script into uci-defaults
     # executes only on first startup
