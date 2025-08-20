@@ -110,7 +110,7 @@ clean() (
 )
 
 uboot_flash() {
-    wget https://repo.turris.cz/turris1x-uboot-sdcard.bin || die "Can't download u-boot"
+    curl -O https://repo.turris.cz/turris1x-uboot-sdcard.bin || die "Can't download u-boot"
     dd if=turris1x-uboot-sdcard.bin of="$SDCARD" bs=1 count=176 conv=notrunc
     dd if=turris1x-uboot-sdcard.bin of="$SDCARD" bs=1 seek=1048576 skip=512 conv=notrunc
 
@@ -120,7 +120,6 @@ uboot_flash() {
 
 # Copy current root to SD card
 migrate_to_sdcard() {
-    TMPDIR="$(mktemp -d)"
     trap clean EXIT
 
     uboot_flash
@@ -131,8 +130,8 @@ migrate_to_sdcard() {
     # import factory image - best effort, proceed even if it fails
     mount "${SDCARDP}1" "$TMPDIR/target" || die "Can't mount ${SDCARDP}1"
     btrfs subvolume create "$TMPDIR/target/@factory" || die "Can't create factory subvolume!"
-    wget https://repo.turris.cz/$branch/medkit/$medkit || die "Can't download medkit"
-    wget -O - https://repo.turris.cz/$branch/medkit/$medkit.sha256 | sha256sum -c - || die "Can't verify medkit integrity"
+    curl -O https://repo.turris.cz/$branch/medkit/$medkit || die "Can't download medkit"
+    curl https://repo.turris.cz/$branch/medkit/$medkit.sha256 | sha256sum -c - || die "Can't verify medkit integrity"
     tar -C "$TMPDIR/target/@factory" -xzf $medkit  || echo "Creating factory snapshot failed" >&2
     # copy enlarge script into uci-defaults
     # executes only on first startup
@@ -152,6 +151,7 @@ migrate_to_sdcard() {
 DIST=""
 FILEPATH=""
 LOSETUP=""
+TMPDIR="$(mktemp -d)"
 while [ $# -gt 0 ]; do
     case "$1" in
         -d|--distimage)
