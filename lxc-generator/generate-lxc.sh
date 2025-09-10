@@ -55,26 +55,6 @@ get_gentoo_url() {
     echo "http://distfiles.gentoo.org/releases/$1/autobuilds/$REL"
 }
 
-get_linaro_latest() {
-    case "$1" in
-        debian)
-            echo https://releases.linaro.org/debian/images/developer-armhf/latest/
-            ;;
-        ubuntu)
-            echo https://releases.linaro.org/ubuntu/images/developer/latest/
-            ;;
-    esac
-}
-
-get_linaro_release() {
-    wget -O - `get_linaro_latest $1` | sed -n 's|.*href="/'"$1"'/images/.*/linaro-\([a-z]*\)-developer-[0-9]*-[0-9]*.tar.gz.*|\1|p'
-}
-
-get_linaro_url() {
-    LIN_LATEST="`get_linaro_latest $1`"
-    echo "https://releases.linaro.org`wget -O - $LIN_LATEST | sed -n 's|.*href="\(/'"$1"'/images/.*/latest/linaro-[a-z]*-developer-[0-9]*-[0-9]*.tar.gz\).*|\1|p'`"
-}
-
 get_lxc_url() {
     date="$(wget -O - https://images.linuxcontainers.org/images/$1/${2:-default} | sed -n 's|.*href="\(20[^/]*\)/.*|\1|p' | sort | tail -n 1)"
     echo "https://images.linuxcontainers.org/images/$1/${2:-default}/$date/rootfs.tar.xz"
