@@ -114,8 +114,9 @@ uboot_flash() {
     dd if=turris1x-uboot-sdcard.bin of="$SDCARD" bs=1 count=176 conv=notrunc
     dd if=turris1x-uboot-sdcard.bin of="$SDCARD" bs=1 seek=1048576 skip=512 conv=notrunc
 
-    printf '\x00' | dd of="$SDCARD" bs=1 seek=$((0x52)) count=1 conv=notrunc
-    printf '\x10' | dd of="$SDCARD" bs=1 seek=$((0x51)) count=1 conv=notrunc
+    # Octal numbers because hex numbers in printf are not supported in POSIX
+    printf '\000' | dd of="$SDCARD" bs=1 seek=$((0x52)) count=1 conv=notrunc
+    printf '\020' | dd of="$SDCARD" bs=1 seek=$((0x51)) count=1 conv=notrunc
 }
 
 # Copy current root to SD card
