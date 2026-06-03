@@ -74,15 +74,6 @@ get_alpine_url() {
     echo "$URL"
 }
 
-get_maurerr_url() {
-    DIST=$1
-    VER=$2
-    ARCH=$3
-    REL_DATE=$(wget -O - "https://maurerr.github.io/lxc/images/$DIST/$VER/$ARCH/" | grep -Eo '<a\ href=\"[0-9].*\">' | grep -Eo '[0-9]{4}-[0-9]{2}-[0-9]{2}')
-    URL="https://maurerr.github.io/lxc/images/$DIST/$VER/$ARCH/$REL_DATE/rootfs.tar.xz"
-    echo "$URL"
-}
-
 get_ubuntu_url() {
     VER="$1"
     ARCH="$2"
@@ -133,7 +124,6 @@ add_image "Gentoo" "musl-openrc" "armv7l" "`get_gentoo_url arm armv7a_hardfp-mus
 add_image "Gentoo" "openrc" "aarch64" "`get_gentoo_url arm64 arm64`"
 add_image "Gentoo" "systemd" "aarch64" "`get_gentoo_url arm64 arm64-systemd`"
 add_image "Gentoo" "musl-openrc" "aarch64" "`get_gentoo_url arm64 arm64-musl`"
-add_image "Kali_by_maurerr" "Kali-rolling" "armv7l" "`get_maurerr_url kali kali-rolling armv7l`"
 add_image "Kali" "current" "aarch64" "`get_lxc_url kali/current/arm64`"
 add_image "NixOS" "25.11" "aarch64" "`get_lxc_url nixos/25.11/arm64`"
 #add_image "NixOS" "26.05" "aarch64" "`get_lxc_url nixos/26.05/arm64`"
