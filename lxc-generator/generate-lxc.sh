@@ -33,6 +33,13 @@ add_image() {
     elif expr "$FILE" : .*\\.tar.xz; then
         mv "$FILE" rootfs.tar.xz
         FILE=rootfs.tar.xz
+    elif [[ "$FILE" == *.squashfs ]]; then
+        rm -rf rootfs-dir 2>/dev/null
+        mkdir rootfs-dir || die "Cannot create rootfs directory"
+        unsquashfs -d rootfs-dir "$FILE" || die "Extracting $FILE failed"
+        tar --numeric-owner --xattrs --acls -cJpf rootfs.tar.xz -C rootfs-dir . || die "Creating rootfs.tar.xz failed"
+        rm -rf rootfs-dir "$FILE"
+        FILE=rootfs.tar.xz
     fi
     if [ "$FILE" \!= rootfs.tar.xz ]; then
         mv "$FILE" rootfs.tar
@@ -58,6 +65,11 @@ get_gentoo_url() {
 get_lxc_url() {
     date="$(curl -fsSL --compressed https://images.linuxcontainers.org/images/$1/${2:-default} | sed -n 's|.*href="\(20[^/]*\)/.*|\1|p' | sort | tail -n 1)"
     echo "https://images.linuxcontainers.org/images/$1/${2:-default}/$date/rootfs.tar.xz"
+}
+
+get_lxc_url_squashfs() {
+    date="$(curl -fsSL --compressed https://images.linuxcontainers.org/images/$1/${2:-default} | sed -n 's|.*href="\(20[^/]*\)/.*|\1|p' | sort | tail -n 1)"
+    echo "https://images.linuxcontainers.org/images/$1/${2:-default}/$date/rootfs.squashfs"
 }
 
 get_opensuse_url() {
@@ -125,7 +137,7 @@ add_image "Gentoo" "openrc" "aarch64" "`get_gentoo_url arm64 arm64`"
 add_image "Gentoo" "systemd" "aarch64" "`get_gentoo_url arm64 arm64-systemd`"
 add_image "Gentoo" "musl-openrc" "aarch64" "`get_gentoo_url arm64 arm64-musl`"
 add_image "Kali" "current" "aarch64" "`get_lxc_url kali/current/arm64`"
-#add_image "NixOS" "26.05" "aarch64" "`get_lxc_url nixos/26.05/arm64`"
+add_image "NixOS" "26.05" "aarch64" "`get_lxc_url_squashfs nixos/26.05/arm64`"
 add_image "openSUSE" "15.4" "armv7l" "`get_opensuse_url https://download.opensuse.org/ports/armv7hl/distribution/leap/15.4/appliances`"
 add_image "openSUSE" "15.4" "aarch64" "`get_opensuse_url https://download.opensuse.org/ports/aarch64/distribution/leap/15.4/appliances`"
 add_image "openSUSE" "15.5" "armv7l" "`get_opensuse_url https://download.opensuse.org/ports/armv7hl/distribution/leap/15.5/appliances`"
