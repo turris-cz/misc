@@ -38,6 +38,7 @@ add_image() {
         mkdir rootfs-dir || die "Cannot create rootfs directory"
         unsquashfs -d rootfs-dir "$FILE" || die "Extracting $FILE failed"
         tar --numeric-owner --xattrs --acls -cJpf rootfs.tar.xz -C rootfs-dir . || die "Creating rootfs.tar.xz failed"
+        chmod -R 777 rootfs-dir
         rm -rf rootfs-dir "$FILE"
         FILE=rootfs.tar.xz
     fi
