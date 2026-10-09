@@ -74,9 +74,20 @@ get_lxc_url_squashfs() {
 }
 
 get_opensuse_url() {
-    URL="`wget -O - "$1" | sed -n 's|.*href="\([^"]*JeOS[^"]*rootfs[^"]*'"$2"'[^"]*.tar.xz\)".*|\1|p' | head -n 1`"
-    [ -n "$URL" ] || URL="`wget -O - "$1" | sed -n 's|.*href="\([^"]*JeOS[^"]*Snapshot[^"]*'"$2"'[^"]*.tar.xz\)".*|\1|p' | head -n 1`"
-    echo "$1/$URL"
+    VER="$1"
+    ARCH="$2"
+    if [ "$VER" = "Tumbleweed" ] && [ $ARCH = "armv7l" ]; then
+        URL="https://download.opensuse.org/download/ports/armv7hl/factory/appliances/"
+    elif [ "$VER" = "Tumbleweed" ] && [ $ARCH = "aarch64" ]; then
+        URL="https://download.opensuse.org/download/ports/$ARCH/factory/appliances/"
+    elif [ $ARCH = "armv7l" ]; then
+        URL="https://download.opensuse.org/ports/armv7hl/distribution/leap/$VER/appliances"
+    else
+        URL="https://download.opensuse.org/ports/$ARCH/distribution/leap/$VER/appliances"
+    fi
+    FILE_NAME="`wget -O - "$URL" | sed -n 's|.*href="\([^"]*JeOS[^"]*rootfs[^"]*'"$ARCH"'[^"]*.tar.xz\)".*|\1|p' | head -n 1`"
+    [ -n "$FILE_NAME" ] || FILE_NAME="`wget -O - "$URL" | sed -n 's|.*href="\([^"]*JeOS[^"]*Snapshot[^"]*'"$ARCH"'[^"]*.tar.xz\)".*|\1|p' | head -n 1`"
+    echo "$URL/$FILE_NAME"
 }
 
 get_alpine_url() {
@@ -137,12 +148,13 @@ add_image "Gentoo" "systemd" "aarch64" "`get_gentoo_url arm64 arm64-systemd`"
 add_image "Gentoo" "musl-openrc" "aarch64" "`get_gentoo_url arm64 arm64-musl`"
 add_image "Kali" "current" "aarch64" "`get_lxc_url kali/current/arm64`"
 add_image "NixOS" "26.05" "aarch64" "`get_lxc_url_squashfs nixos/26.05/arm64`"
-add_image "openSUSE" "15.4" "armv7l" "`get_opensuse_url https://download.opensuse.org/ports/armv7hl/distribution/leap/15.4/appliances`"
-add_image "openSUSE" "15.4" "aarch64" "`get_opensuse_url https://download.opensuse.org/ports/aarch64/distribution/leap/15.4/appliances`"
-add_image "openSUSE" "15.5" "armv7l" "`get_opensuse_url https://download.opensuse.org/ports/armv7hl/distribution/leap/15.5/appliances`"
-add_image "openSUSE" "15.5" "aarch64" "`get_opensuse_url https://download.opensuse.org/ports/aarch64/distribution/leap/15.5/appliances`"
-add_image "openSUSE" "Tumbleweed" "armv7l" "https://download.opensuse.org/ports/armv7hl/factory/appliances/opensuse-tumbleweed-image.armv7l-lxc.tar.xz"
-add_image "openSUSE" "Tumbleweed" "aarch64" "https://download.opensuse.org/ports/aarch64/tumbleweed/appliances/opensuse-tumbleweed-image.aarch64-lxc.tar.xz"
+add_image "openSUSE" "15.4" "armv7l" "`get_opensuse_url 15.4 armv7l`"
+add_image "openSUSE" "15.4" "aarch64" "`get_opensuse_url 15.4 aarch64`"
+add_image "openSUSE" "15.5" "armv7l" "`get_opensuse_url 15.5 armv7l`"
+add_image "openSUSE" "15.5" "aarch64" "`get_opensuse_url 15.5 aarch64`"
+add_image "openSUSE" "15.6" "aarch64" "`get_opensuse_url 15.6 aarch64`"
+add_image "openSUSE" "Tumbleweed" "armv7l" "`get_opensuse_url Tumbleweed armv7l`"
+add_image "openSUSE" "Tumbleweed" "aarch64" "`get_opensuse_url Tumbleweed aarch64`"
 add_image "OpenWrt" "25.12.4" "arm64" "`get_openwrt_url 25.12.4 arm64`"
 add_image "OpenWrt" "24.12.4" "armv7l" "`get_openwrt_url 25.12.4 armv7l`"
 add_image "OpenWrt" "snapshot" "arm64" "`get_openwrt_url snapshot arm64`"
