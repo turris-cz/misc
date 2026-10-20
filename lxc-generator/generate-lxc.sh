@@ -76,14 +76,11 @@ get_lxc_url_squashfs() {
 get_opensuse_url() {
     VER="$1"
     ARCH="$2"
-    if [ "$VER" = "Tumbleweed" ] && [ $ARCH = "armv7l" ]; then
-        URL="https://download.opensuse.org/download/ports/armv7hl/factory/appliances/"
-    elif [ "$VER" = "Tumbleweed" ] && [ $ARCH = "aarch64" ]; then
-        URL="https://download.opensuse.org/download/ports/$ARCH/factory/appliances/"
-    elif [ $ARCH = "armv7l" ]; then
-        URL="https://download.opensuse.org/ports/armv7hl/distribution/leap/$VER/appliances"
+    URL_ARCH="$(echo $ARCH | sed 's/armv7l/armv7hl/g')"
+    if [ "$VER" = "Tumbleweed" ]; then
+        URL="https://download.opensuse.org/download/ports/${URL_ARCH}/factory/appliances/"
     else
-        URL="https://download.opensuse.org/ports/$ARCH/distribution/leap/$VER/appliances"
+        URL="https://download.opensuse.org/ports/${URL_ARCH}/distribution/leap/$VER/appliances"
     fi
     FILE_NAME="`wget -O - "$URL" | sed -n 's|.*href="\([^"]*JeOS[^"]*rootfs[^"]*'"$ARCH"'[^"]*.tar.xz\)".*|\1|p' | head -n 1`"
     [ -n "$FILE_NAME" ] || FILE_NAME="`wget -O - "$URL" | sed -n 's|.*href="\([^"]*JeOS[^"]*Snapshot[^"]*'"$ARCH"'[^"]*.tar.xz\)".*|\1|p' | head -n 1`"
